@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="SharedKernel.fs"/>
+        <Compile Include="Domain.fs"/>
+        <Compile Include="Security.fs"/>
+        <Compile Include="Data.fs" />
+        <Compile Include="CategoryAggregate.fs" />
+        <Compile Include="Application.fs"/>
+        <Compile Include="WeatherForecast.fs"/>
+        <Compile Include="Pages\Models.fs" />
+        <Compile Include="Pages\Components.fs" />
+        <Compile Include="Pages\App.fs" />
+        <Compile Include="Pages\Category.fs"/>
+        <Compile Include="Pages\Target.fs" />
+        <Compile Include="Pages\Opening.fs" />
+        <Compile Include="Pages\Landing.fs" />
+        <Compile Include="Pages\PrivateScheduling.fs" />
+        <Compile Include="Controllers/WeatherForecastController.fs"/>
+        <Compile Include="Endpoints.fs" />
+        <Compile Include="Program.fs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+        <Content Include="Dockerfile"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Falco" Version="4.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13"/>
+    </ItemGroup>
+
+</Project>
