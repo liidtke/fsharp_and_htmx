@@ -1,5 +1,6 @@
 module Program
 
+open Domain
 open Falco
 open Falco.Routing
 open Falco.HostBuilder
@@ -12,12 +13,10 @@ open Microsoft.Extensions.Hosting
 
 
 let configureServices (configuration: IConfiguration) (services: IServiceCollection) =
-    // let currentUser = CurrentUser.standard
-    let section = configuration.GetSection("DatabaseSettings")
 
-    // let settings =
-    //     { ConnectionString = section.GetValue("ConnectionString")
-    //       DatabaseName = section.GetValue("DatabaseName") }
+    let settings =
+         { ApiKey = configuration.GetValue("ApiKey")
+           ClientKey = configuration.GetValue("ClientKey") }
 
     // let mongoContext = DbContext(settings) :> IDbContext
 
@@ -25,6 +24,7 @@ let configureServices (configuration: IConfiguration) (services: IServiceCollect
     services
         // .AddSingleton<IDbContext>(mongoContext)
         // .AddSingleton<CurrentUser>(currentUser)
+        .AddSingleton<Settings>(settings)
         .AddCors()
         .AddFalco()
     |> ignore

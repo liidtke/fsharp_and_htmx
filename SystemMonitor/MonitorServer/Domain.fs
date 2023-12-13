@@ -18,10 +18,17 @@ type ClientId = Guid
 type DeviceStat = {
     Device: Device
     Stat: Stat
-    Value: int
+    Testing: int
 }
 type SystemUpdate = {
    DeviceStats: DeviceStat list
    Date:DateTime
    Client:ClientId
 }
+
+type Settings = {
+  ApiKey: string
+  ClientKey:string
+}
+
+

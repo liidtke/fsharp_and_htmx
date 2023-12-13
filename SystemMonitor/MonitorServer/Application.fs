@@ -11,7 +11,6 @@ open SharedKernel
 open Microsoft.AspNetCore.Http
 open System.Linq
 
-type Settings = { test: bool }
 
 let handleInvalidAuth: HttpHandler =
     Response.withStatusCode 401
@@ -19,6 +18,7 @@ let handleInvalidAuth: HttpHandler =
 
 let secureHandler (ok: HttpHandler) : HttpHandler =
     Request.ifAuthenticated ok handleInvalidAuth
+
 
 type SecuritySettings =
     { JwtSecurityKey: string
@@ -126,25 +126,32 @@ type ServiceHandler<'input, 'output> = 'input -> ServiceOutput<'output>
 let getDependencies =
     fun (ctx: HttpContext) ->
         let env = ctx.GetService<Settings>()
+        { settings = env }
 
-        succeed { settings = env }
+
+let keyCheck (ctx:HttpContext) (settings:Settings) =
+    let env = ctx.GetService<Settings>()
+    let headers = ctx.Request.Headers |> Seq.map (fun x -> x.Key, (x.Value |> Seq.head)) |> dict
+    let apiKey = if headers.ContainsKey("ApiKey") then headers["ApiKey"] else ""
+    let clientKey = if headers.ContainsKey("ClientKey") then headers["ClientKey"] else ""
+
+    settings.ApiKey = apiKey || settings.ClientKey = clientKey
 
 
 let run (serviceHandler: ServiceContext -> ServiceHandler<'input, 'output>) (input: 'input) : HttpHandler =
     // secureHandler <|
     fun (ctx: HttpContext) ->
-        let so = getDependencies ctx
+        let services = getDependencies ctx
 
-        match so with
-        | Success deps -> from (serviceHandler <| deps <| input) ctx
-        | Failure f -> authHandler ctx
+        match keyCheck ctx services.settings with 
+        | true -> from (serviceHandler <| services <| input) ctx
+        | false -> authHandler ctx
 
 let runHtml
     (serviceHandler: ServiceContext -> ServiceHandler<'input, Falco.Markup.XmlNode>)
     (input: 'input)
     : HttpHandler =
-    // secureHandler <|
     fun (ctx: HttpContext) ->
-        match getDependencies ctx with
-        | Success deps -> fromHtml (serviceHandler <| deps <| input) ctx
-        | Failure f -> authHandler ctx
+        let services = getDependencies ctx
+        fromHtml (serviceHandler <| services <| input) ctx
+        //| Failure f -> authHandler ctx
