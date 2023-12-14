@@ -118,7 +118,7 @@ let getClaims (ctx: HttpContext) =
 
 type ServiceContext =
     {
-      // user
+      state:ServerState
       settings: Settings }
 
 type ServiceHandler<'input, 'output> = 'input -> ServiceOutput<'output>
@@ -126,7 +126,8 @@ type ServiceHandler<'input, 'output> = 'input -> ServiceOutput<'output>
 let getDependencies =
     fun (ctx: HttpContext) ->
         let env = ctx.GetService<Settings>()
-        { settings = env }
+        let serverState = ctx.GetService<ServerState>()
+        { settings = env; state = serverState }
 
 
 let keyCheck (ctx:HttpContext) (settings:Settings) =
@@ -135,7 +136,7 @@ let keyCheck (ctx:HttpContext) (settings:Settings) =
     let apiKey = if headers.ContainsKey("ApiKey") then headers["ApiKey"] else ""
     let clientKey = if headers.ContainsKey("ClientKey") then headers["ClientKey"] else ""
 
-    settings.ApiKey = apiKey || settings.ClientKey = clientKey
+    settings.apiKey = apiKey || settings.clientKey = clientKey
 
 
 let run (serviceHandler: ServiceContext -> ServiceHandler<'input, 'output>) (input: 'input) : HttpHandler =

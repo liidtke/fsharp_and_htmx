@@ -3,7 +3,6 @@ module Domain
 open System
 
 
-
 type Device =
     | CPU
     | Memory
@@ -12,23 +11,37 @@ type Device =
 type Stat =
     | Utilization
     | Temperature
-    
+
 type ClientId = Guid
 
-type DeviceStat = {
-    Device: Device
-    Stat: Stat
-    Testing: int
-}
-type SystemUpdate = {
-   DeviceStats: DeviceStat list
-   Date:DateTime
-   Client:ClientId
-}
+type DeviceStat =
+    { device: Device
+      stat: Stat
+      testing: int }
 
-type Settings = {
-  ApiKey: string
-  ClientKey:string
-}
+type SystemUpdate =
+    { deviceStats: DeviceStat list
+      date: DateTime
+      client: ClientId }
 
+type Settings = { apiKey: string; clientKey: string }
 
+type Client = { name: string; id: Guid }
+
+type ClientRegistration =
+    { mutable clients: Client list }
+
+    member this.AddOne() = ignore
+    member this.RemoveOne() = ignore
+
+type ServerState =
+    { lastSystemUpdate: SystemUpdate
+      clientRegistration: ClientRegistration }
+
+module ServerState =
+    let initial =
+        { lastSystemUpdate =
+            { deviceStats = []
+              date = DateTime.Now
+              client = Guid.Empty }
+          clientRegistration = { clients = [] } }

@@ -15,15 +15,15 @@ open Microsoft.Extensions.Hosting
 let configureServices (configuration: IConfiguration) (services: IServiceCollection) =
 
     let settings =
-         { ApiKey = configuration.GetValue("ApiKey")
-           ClientKey = configuration.GetValue("ClientKey") }
+         { apiKey = configuration.GetValue("ApiKey")
+           clientKey = configuration.GetValue("ClientKey") }
 
     // let mongoContext = DbContext(settings) :> IDbContext
 
 
     services
         // .AddSingleton<IDbContext>(mongoContext)
-        // .AddSingleton<CurrentUser>(currentUser)
+        .AddSingleton<ServerState>(ServerState.initial)
         .AddSingleton<Settings>(settings)
         .AddCors()
         .AddFalco()
