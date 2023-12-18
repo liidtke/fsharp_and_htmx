@@ -14,10 +14,7 @@ type Stat =
 
 type ClientId = Guid
 
-type DeviceStat =
-    { device: Device
-      stat: Stat
-      testing: int }
+type DeviceStat = { device: Device; stat: Stat }
 
 type SystemUpdate =
     { deviceStats: DeviceStat list
@@ -31,7 +28,7 @@ type Client = { name: string; id: Guid }
 type ClientRegistration =
     { mutable clients: Client list }
 
-    member this.AddOne() = ignore
+    member this.AddOne(one:Client) = this.clients <- (this.clients @ [one]) 
     member this.RemoveOne() = ignore
 
 type ServerState =
