@@ -12,9 +12,9 @@
         <Compile Include="Security.fs" />
         <Compile Include="Data.fs" />
         <Compile Include="Application.fs" />
+        <Compile Include="Models.fs" />
         <Compile Include="Service.fs" />
         <Compile Include="Pages\Components.fs" />
-        <Compile Include="Pages\App.fs" />
         <Compile Include="Pages\Landing.fs" />
         <Compile Include="Endpoints.fs" />
         <Compile Include="Program.fs" />
