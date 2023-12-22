@@ -21,8 +21,10 @@ module Client =
             client |> context.state.clientRegistration.AddOne |> ignore
             succeed client
 
+    let validate client =
+        if client.id = Guid.Empty then invalidate "invalid id" else succeed client
     let register context client =
-        registerEffect context client
+        client |> validate |> may (registerEffect context)
         
     let registerHandler : HttpHandler =
         let handle (client:Client) : HttpHandler = run register client
