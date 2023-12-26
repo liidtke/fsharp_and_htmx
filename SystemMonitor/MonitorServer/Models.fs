@@ -35,22 +35,36 @@ module Stat =
 
 type DeviceStatModel = { device: string; stat: string }
 
-type ClientModel = {
-      name: string
+type ClientModel =
+    { name: string
       id: Guid
-      clientType: string 
-}
+      clientType: string }
 
 module ClientModel =
-    let convert (client:Client) = 0
-    let parse (client:ClientModel) = 0
+    let convert (client: Client) : ClientModel =
+        { id = client.id
+          name = client.name
+          clientType =
+            match client.clientType with
+            | Source -> "Source"
+            | Display -> "Display"
+            | _ -> failwith "todo" }
+
+    let parse (client: ClientModel) : Client =
+        { id = client.id
+          name = client.name
+          clientType =
+            match client.clientType with
+            | "Source" -> Source
+            | "Display" -> Display
+            | _ -> failwith "todo" }
 
 type SystemUpdateModel =
     { deviceStats: DeviceStatModel list
       date: DateTime
       client: Guid }
 
-module SystemUpdate = 
+module SystemUpdate =
     let convert (s: SystemUpdate) : SystemUpdateModel =
         { date = s.date
           client = s.client
@@ -59,7 +73,7 @@ module SystemUpdate =
             |> List.map (fun ds ->
                 { device = Device.convert ds.device
                   stat = Stat.convert ds.stat }) }
-    
+
     let parse (s: SystemUpdateModel) : SystemUpdate =
         { date = s.date
           client = s.client

@@ -30,7 +30,7 @@ type ClientType =
 type Client =
     { name: string
       id: Guid
-    }
+      clientType: ClientType }
 
 type ClientRegistration =
     { mutable clients: Client list }

@@ -10,5 +10,6 @@ Content-Length: 76
 
 {
   "id": "D3C380CA-8419-4BAF-A08D-F02EC665D355",
-  "name": "content"
+  "name": "content",
+  "clientType": "Source"
 }

@@ -34,10 +34,15 @@ module Client =
             succeed client
 
     let register context client =
-        client |> validate |> may validateName |> may (registerEffect context)
+        client
+        |> Models.ClientModel.parse
+        |> validate
+        |> may validateName
+        |> may (registerEffect context)
+        |> maybe Models.ClientModel.convert
 
     let registerHandler: HttpHandler =
-        let handle (client: Client) : HttpHandler = run register client
+        let handle (client: Models.ClientModel) : HttpHandler = run register client
         Request.mapJson handle
 
     let receive context sysUpdate = 0
