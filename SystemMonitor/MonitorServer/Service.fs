@@ -22,21 +22,31 @@ module Client =
             succeed client
 
     let validate client =
-        if client.id = Guid.Empty then invalidate "invalid id" else succeed client
+        if client.id = Guid.Empty then
+            invalidate "invalid id"
+        else
+            succeed client
+
+    let validateName client =
+        if client.name = String.Empty then
+            invalidate "invalid name"
+        else
+            succeed client
+
     let register context client =
-        client |> validate |> may (registerEffect context)
-        
-    let registerHandler : HttpHandler =
-        let handle (client:Client) : HttpHandler = run register client
+        client |> validate |> may validateName |> may (registerEffect context)
+
+    let registerHandler: HttpHandler =
+        let handle (client: Client) : HttpHandler = run register client
         Request.mapJson handle
-                
+
     let receive context sysUpdate = 0
 
 module Server =
     let send context = 0
 
 
-let register = post "/api/register" Client.registerHandler
+let register = post "/api/client" Client.registerHandler
 let send = post "/api/status" (Response.ofPlainText "")
 
 let status = get "/api/status" (Response.ofPlainText "")

@@ -23,12 +23,21 @@ type SystemUpdate =
 
 type Settings = { apiKey: string; clientKey: string }
 
-type Client = { name: string; id: Guid }
+type ClientType =
+    | Source
+    | Display
+
+type Client =
+    { name: string
+      id: Guid
+    }
 
 type ClientRegistration =
     { mutable clients: Client list }
 
-    member this.AddOne(one:Client) = this.clients <- (this.clients @ [one]) 
+    member this.AddOne(one: Client) =
+        this.clients <- (this.clients @ [ one ])
+
     member this.RemoveOne() = ignore
 
 type ServerState =

@@ -1,0 +1,14 @@
+﻿### GET test
+GET http://localhost:5262/api/status
+
+### Send POST request with json body
+POST /api/client HTTP/1.1
+Host: localhost:5262
+x-api-key: 123
+Content-Type: application/json
+Content-Length: 76
+
+{
+  "id": "D3C380CA-8419-4BAF-A08D-F02EC665D355",
+  "name": "content"
+}

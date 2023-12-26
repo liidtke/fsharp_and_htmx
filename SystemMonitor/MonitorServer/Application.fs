@@ -133,7 +133,7 @@ let getDependencies =
 let keyCheck (ctx:HttpContext) (settings:Settings) =
     let env = ctx.GetService<Settings>()
     let headers = ctx.Request.Headers |> Seq.map (fun x -> x.Key, (x.Value |> Seq.head)) |> dict
-    let apiKey = if headers.ContainsKey("ApiKey") then headers["ApiKey"] else ""
+    let apiKey = if headers.ContainsKey("x-api-key") then headers["x-api-key"] else ""
     let clientKey = if headers.ContainsKey("ClientKey") then headers["ClientKey"] else ""
 
     settings.apiKey = apiKey || settings.clientKey = clientKey

@@ -35,6 +35,16 @@ module Stat =
 
 type DeviceStatModel = { device: string; stat: string }
 
+type ClientModel = {
+      name: string
+      id: Guid
+      clientType: string 
+}
+
+module ClientModel =
+    let convert (client:Client) = 0
+    let parse (client:ClientModel) = 0
+
 type SystemUpdateModel =
     { deviceStats: DeviceStatModel list
       date: DateTime
