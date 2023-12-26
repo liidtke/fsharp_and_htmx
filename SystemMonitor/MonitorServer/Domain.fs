@@ -41,7 +41,8 @@ type ClientRegistration =
     member this.RemoveOne() = ignore
 
 type ServerState =
-    { lastSystemUpdate: SystemUpdate
+    { mutable lastSystemUpdate: SystemUpdate
+      mutable history: SystemUpdate list
       clientRegistration: ClientRegistration }
 
 module ServerState =
@@ -50,4 +51,5 @@ module ServerState =
             { deviceStats = []
               date = DateTime.Now
               client = Guid.Empty }
+          history = [] 
           clientRegistration = { clients = [] } }

@@ -48,11 +48,27 @@ module Client =
     let receive context sysUpdate = 0
 
 module Server =
-    let send context = 0
+    let updateEffect serverState up =
+        serverState.lastSystemUpdate <- up
+        serverState.history <- serverState.history @ [ up ]
+        up
 
+    let update context up =
+        up
+        |> Models.SystemUpdate.parse
+        |> updateEffect context.state
+        |> Models.SystemUpdate.convert
+        |> succeed
+
+    let updateHandler: HttpHandler =
+        let handle (up: Models.SystemUpdateModel) : HttpHandler = run update up
+        Request.mapJson handle
+    let getLast context () = context.state.lastSystemUpdate |> Models.SystemUpdate.convert |> succeed
+    let getHandler : HttpHandler =
+        run getLast ()
 
 let register = post "/api/client" Client.registerHandler
-let send = post "/api/status" (Response.ofPlainText "")
+let send = post "/api/status" Server.updateHandler
 
-let status = get "/api/status" (Response.ofPlainText "")
+let status = get "/api/status" Server.getHandler
 let endpoints = [ register; send; status ]
