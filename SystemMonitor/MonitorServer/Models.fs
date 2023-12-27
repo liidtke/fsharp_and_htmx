@@ -33,7 +33,7 @@ module Stat =
         | "Temperature" -> Temperature
         | _ -> failwith "todo"
 
-type DeviceStatModel = { device: string; stat: string }
+type DeviceStatModel = { device: string; stat: string;value:string }
 
 type ClientModel =
     { name: string
@@ -44,6 +44,7 @@ module ClientModel =
     let convert (client: Client) : ClientModel =
         { id = client.id
           name = client.name
+          //add later
           clientType =
             match client.clientType with
             | Source -> "Source"
@@ -53,6 +54,7 @@ module ClientModel =
     let parse (client: ClientModel) : Client =
         { id = client.id
           name = client.name
+          sourceId = None //add later 
           clientType =
             match client.clientType with
             | "Source" -> Source
@@ -62,23 +64,25 @@ module ClientModel =
 type SystemUpdateModel =
     { deviceStats: DeviceStatModel list
       date: DateTime
-      client: Guid }
+      clientId: Guid }
 
 module SystemUpdate =
     let convert (s: SystemUpdate) : SystemUpdateModel =
         { date = s.date
-          client = s.client
+          clientId = s.clientId
           deviceStats =
             s.deviceStats
             |> List.map (fun ds ->
-                { device = Device.convert ds.device
+                { value = ds.value
+                  device = Device.convert ds.device
                   stat = Stat.convert ds.stat }) }
 
     let parse (s: SystemUpdateModel) : SystemUpdate =
         { date = s.date
-          client = s.client
+          clientId = s.clientId
           deviceStats =
             s.deviceStats
             |> List.map (fun ds ->
-                { device = Device.parse ds.device
+                { value = ds.value
+                  device = Device.parse ds.device
                   stat = Stat.parse ds.stat }) }

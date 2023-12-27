@@ -14,22 +14,23 @@ type Stat =
 
 type ClientId = Guid
 
-type DeviceStat = { device: Device; stat: Stat }
+type DeviceStat = { device: Device; stat: Stat; value:string }
 
 type SystemUpdate =
     { deviceStats: DeviceStat list
       date: DateTime
-      client: ClientId }
+      clientId: ClientId }
 
 type Settings = { apiKey: string; clientKey: string }
 
 type ClientType =
     | Source
-    | Display
+    | Display  
 
 type Client =
     { name: string
       id: Guid
+      sourceId: Guid option
       clientType: ClientType }
 
 type ClientRegistration =
@@ -50,6 +51,6 @@ module ServerState =
         { lastSystemUpdate =
             { deviceStats = []
               date = DateTime.Now
-              client = Guid.Empty }
+              clientId = Guid.Empty }
           history = [] 
           clientRegistration = { clients = [] } }

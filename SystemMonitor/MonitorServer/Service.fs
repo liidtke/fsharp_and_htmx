@@ -50,22 +50,25 @@ module Client =
 module Server =
     let updateEffect serverState up =
         serverState.lastSystemUpdate <- up
-        serverState.history <- serverState.history @ [ up ]
+        serverState.history <- up :: serverState.history 
+        if serverState.history.Length > 50 then
+            serverState.history <- serverState.history |> List.take 50
         up
 
+    let validate state up = succeed up
     let update context up =
         up
         |> Models.SystemUpdate.parse
-        |> updateEffect context.state
-        |> Models.SystemUpdate.convert
-        |> succeed
+        |> validate context.state 
+        |> maybe (updateEffect context.state)
+        |> maybe Models.SystemUpdate.convert
 
     let updateHandler: HttpHandler =
         let handle (up: Models.SystemUpdateModel) : HttpHandler = run update up
         Request.mapJson handle
     let getLast context () = context.state.lastSystemUpdate |> Models.SystemUpdate.convert |> succeed
     let getHandler : HttpHandler =
-        run getLast ()
+        run getLast () //add filter by source / client later
 
 let register = post "/api/client" Client.registerHandler
 let send = post "/api/status" Server.updateHandler
