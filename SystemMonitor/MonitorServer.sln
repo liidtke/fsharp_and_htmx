@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MonitorServer", "MonitorServer\MonitorServer.fsproj", "{AADC663C-44E0-428C-857C-2C8418437747}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MonitorServer.Client", "MonitorServer.Client\MonitorServer.Client.fsproj", "{4749FEC6-B227-4349-8EDF-BE7D7378520E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{AADC663C-44E0-428C-857C-2C8418437747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AADC663C-44E0-428C-857C-2C8418437747}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AADC663C-44E0-428C-857C-2C8418437747}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4749FEC6-B227-4349-8EDF-BE7D7378520E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4749FEC6-B227-4349-8EDF-BE7D7378520E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4749FEC6-B227-4349-8EDF-BE7D7378520E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4749FEC6-B227-4349-8EDF-BE7D7378520E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

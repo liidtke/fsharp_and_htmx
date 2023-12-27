@@ -20,21 +20,6 @@ let iden = Attr.id
 let place = Attr.placeholder
 let tp = Attr.type'
 
-
-let header () =
-    Elem.nav
-        [ cl "container-fluid" ]
-        [
-          Elem.ul [ cl "" ] [
-              Elem.li [ cl "" ] [ Elem.a [ href "/app" ] [ txt "Logo" ] ]
-              Elem.li [ cl "" ] [ Elem.a [ cl ""; href "/app/tipos-agendamento" ] [ txt "Tipos de Agendamento" ] ] 
-              Elem.li [ cl "" ] [ Elem.a [ cl ""; href "/app/categorias" ] [ txt "Categorias" ] ]
-          ]
-          Elem.ul
-              [ cl ""; id "header-menu" ]
-              [ Elem.li [ cl "" ] [ Elem.a [ cl ""; href "/app/categorias" ] [ txt "Sobre" ] ]
-                 ] ]
-
 let card title text =
     Elem.article
         [ cl ""; style "" ]
@@ -49,7 +34,7 @@ let page title ct =
             (ct
              @ [ Elem.div [ iden "message"; cl "toaster-wrapper" ] [] ])
 
-    let body = [ header (); main ]
+    let body = [ main ]
 
     Elem.html
         [create "data-theme" <| "light"]

@@ -2,6 +2,6 @@ module Endpoints
 
 let handlers =
     []
-    @ Pages.Landing.endpoints
+    @ Pages.Home.endpoints
     @ Service.endpoints
 

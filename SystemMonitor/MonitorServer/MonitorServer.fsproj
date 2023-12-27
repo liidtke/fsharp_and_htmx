@@ -15,7 +15,7 @@
         <Compile Include="Models.fs" />
         <Compile Include="Service.fs" />
         <Compile Include="Pages\Components.fs" />
-        <Compile Include="Pages\Landing.fs" />
+        <Compile Include="Pages\Home.fs" />
         <Compile Include="Endpoints.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
