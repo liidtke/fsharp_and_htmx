@@ -3,7 +3,28 @@ module MonitorServer.Client.Monitor
 
 open System
 open System.Threading
+open Hardware.Info
+open Flurl
 
+type DeviceStatModel = { device: string; name:string; stat: string;value:string }
+type ClientModel =
+    { name: string
+      id: Guid
+      clientType: string }
+
+type SystemUpdateModel =
+    { deviceStats: DeviceStatModel list
+      date: DateTime
+      clientId: Guid }
+
+let getSomething () =
+    let hw = HardwareInfo()
+    hw.RefreshCPUList() |> ignore
+    let cpu = hw.CpuList |> Seq.head
+    let core = cpu.CpuCoreList |> Seq.head
+    printf "%s" cpu.Name
+    0
+    
 
 let private run (interval: int) t =
     printfn "run"
@@ -13,8 +34,7 @@ let private run (interval: int) t =
         task {
             let! tick = timer.WaitForNextTickAsync(t)
 
-            printfn "executing thing here"
-            
+            getSomething () |> ignore
             if not t.IsCancellationRequested then
                 return! work t
         }

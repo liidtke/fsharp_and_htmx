@@ -11,6 +11,7 @@ module Device =
         | CPU -> "CPU"
         | Memory -> "Memory"
         | GPU -> "GPU"
+        | Disk -> "Disk"
         | _ -> failwith "todo"
 
     let parse (str: string) =
@@ -18,6 +19,7 @@ module Device =
         | "CPU" -> Device.CPU
         | "Memory" -> Device.Memory
         | "GPU" -> Device.GPU
+        | "Disk" -> Device.Disk
         | _ -> failwith "todo"
 
 module Stat =
@@ -25,15 +27,17 @@ module Stat =
         match s with
         | Utilization -> "Utilization"
         | Temperature -> "Temperature"
+        | Available -> "Available"
         | _ -> failwith "todo"
 
     let parse (str: string) =
         match str with
         | "Utilization" -> Utilization
         | "Temperature" -> Temperature
+        | "Available" -> Available
         | _ -> failwith "todo"
 
-type DeviceStatModel = { device: string; stat: string;value:string }
+type DeviceStatModel = { device: string; name:string; stat: string;value:string }
 
 type ClientModel =
     { name: string
@@ -75,6 +79,7 @@ module SystemUpdate =
             |> List.map (fun ds ->
                 { value = ds.value
                   device = Device.convert ds.device
+                  name = ds.name
                   stat = Stat.convert ds.stat }) }
 
     let parse (s: SystemUpdateModel) : SystemUpdate =
@@ -84,5 +89,6 @@ module SystemUpdate =
             s.deviceStats
             |> List.map (fun ds ->
                 { value = ds.value
+                  name = ds.name 
                   device = Device.parse ds.device
                   stat = Stat.parse ds.stat }) }

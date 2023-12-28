@@ -7,14 +7,20 @@ type Device =
     | CPU
     | Memory
     | GPU
+    | Disk
 
 type Stat =
     | Utilization
     | Temperature
+    | Available
 
 type ClientId = Guid
 
-type DeviceStat = { device: Device; stat: Stat; value:string }
+type DeviceStat =
+    { device: Device
+      name: string
+      stat: Stat
+      value: string }
 
 type SystemUpdate =
     { deviceStats: DeviceStat list
@@ -25,7 +31,7 @@ type Settings = { apiKey: string; clientKey: string }
 
 type ClientType =
     | Source
-    | Display  
+    | Display
 
 type Client =
     { name: string
@@ -52,5 +58,5 @@ module ServerState =
             { deviceStats = []
               date = DateTime.Now
               clientId = Guid.Empty }
-          history = [] 
+          history = []
           clientRegistration = { clients = [] } }
