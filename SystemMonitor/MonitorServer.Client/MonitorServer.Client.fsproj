@@ -8,6 +8,7 @@
     <ItemGroup>
         <Compile Include="SharedKernel.fs" />
         <Compile Include="Domain.fs" />
+        <Compile Include="Loader.fs" />
         <Compile Include="FlurlBuilder.fs" />
         <Compile Include="Monitor.fs" />
         <Compile Include="Program.fs"/>

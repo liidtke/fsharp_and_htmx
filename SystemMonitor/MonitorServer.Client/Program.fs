@@ -48,7 +48,7 @@ let main args =
         let output = parse parser args
 
         match output with
-            | Success env -> Monitor.handle env.interval |> Async.RunSynchronously 
+            | Success env -> Monitor.handle env |> Async.RunSynchronously 
             | Failure f -> printfn "%s" f.ErrorMessage
         // Return 0. This indicates success.
         0

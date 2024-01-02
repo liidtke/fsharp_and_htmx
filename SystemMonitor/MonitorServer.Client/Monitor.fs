@@ -4,44 +4,34 @@ module MonitorServer.Client.Monitor
 open System
 open System.Threading
 open Hardware.Info
-open Flurl
 
-type DeviceStatModel = { device: string; name:string; stat: string;value:string }
-type ClientModel =
-    { name: string
-      id: Guid
-      clientType: string }
+let mount (env:Env) (loaders:StatLoader list) =
+    {
+     deviceStats = loaders |> List.map (fun i -> i())
+     date = DateTime.UtcNow
+     clientId =  env.clientId
+    }
 
-type SystemUpdateModel =
-    { deviceStats: DeviceStatModel list
-      date: DateTime
-      clientId: Guid }
-
-let getSomething () =
-    let hw = HardwareInfo()
-    hw.RefreshCPUList() |> ignore
-    let cpu = hw.CpuList |> Seq.head
-    let core = cpu.CpuCoreList |> Seq.head
-    printf "%s" cpu.Name
-    0
-    
-
-let private run (interval: int) t =
+let private run env t =
     printfn "run"
-    let timer = new PeriodicTimer(TimeSpan.FromMilliseconds(interval))
+    let timer = new PeriodicTimer(TimeSpan.FromMilliseconds(env.interval))
 
     let rec work t =
         task {
             let! tick = timer.WaitForNextTickAsync(t)
 
-            getSomething () |> ignore
+            let! response = mount env Loader.loaders |> FlurlBuilder.post env "/api/status"
+            match response with
+            | Success systemUpdateModel -> printfn "send ok"
+            | Failure errorResult -> printfn "%s" errorResult.ErrorMessage
+            
             if not t.IsCancellationRequested then
                 return! work t
         }
     work t
 
-let handle interval =
+let handle env =
     async {
         let! token = Async.CancellationToken
-        run interval token |> Async.AwaitTask |> Async.RunSynchronously
+        run env token |> Async.AwaitTask |> Async.RunSynchronously
     }
