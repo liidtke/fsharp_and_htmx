@@ -86,3 +86,4 @@ let toToaster (output: ServiceOutput<'t>) =
               [ cl $"toast toast--{boxClass} ml-0 mr-0 mxw-30"
                 hypr "init wait 2s transition my opacity to 0% over 1 seconds then hide me" ]
               [ txt message ] ]
+let single title ct = page title [ct]

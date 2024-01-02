@@ -1,5 +1,4 @@
-﻿[<RequireQualifiedAccess>]
-module Models
+﻿module Models
 
 open System
 open Domain
