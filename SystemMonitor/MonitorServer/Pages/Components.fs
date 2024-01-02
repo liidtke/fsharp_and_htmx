@@ -21,8 +21,8 @@ let place = Attr.placeholder
 let tp = Attr.type'
 
 let card title text =
-    Elem.article
-        [ cl ""; style "" ]
+    Elem.div
+        [ cl "card"; style "" ]
         [ Elem.div
               [ cl "content u-text-center pt-3" ]
               [ Elem.p [ cl "title mt-0 mb-0" ] [ txt title ]; Elem.p [ cl "" ] [ txt text ] ] ]

@@ -9,14 +9,16 @@ open Falco.Markup.Attr
 open Models
 open Pages.Components
 
-let card (item: DeviceStatModel) =
-    Elem.article [] [ txt $"{item.device}: {item.value}" ]
+let cardItem (item: DeviceStatModel) =
+    //Elem.article [] [ txt $"{item.device}: {item.value}" ]
+    card item.device item.value
+
 
 let monitor (item: SystemUpdateModel) =
     Elem.div
         [ Attr.id "monitor"
           hxGet "/monitor"
-          hxTrigger "every 2s"
+          //hxTrigger "every 2s"
           //hxSwap "outerHTML"
           //hxTarget "monitor"
           ]
@@ -24,7 +26,7 @@ let monitor (item: SystemUpdateModel) =
          @ if item.deviceStats.Length = 0 then
                [ Elem.p [] [ txt "Nada para exibir" ] ]
            else
-               List.map card item.deviceStats)
+               [ Elem.div [ cl "grid" ] (List.map cardItem item.deviceStats) ])
 
 let loadMonitor output =
     match output with

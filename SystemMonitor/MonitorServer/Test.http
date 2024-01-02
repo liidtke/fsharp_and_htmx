@@ -31,6 +31,11 @@ Content-Length: 76
       "device": "CPU",
       "stat": "Utilization",
       "value": "60%"
+    },
+    {
+      "device": "Memory",
+      "stat": "Utilization",
+      "value": "30%"
     }
   ]
 }
