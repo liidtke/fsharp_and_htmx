@@ -36,6 +36,11 @@ Content-Length: 76
       "device": "Memory",
       "stat": "Utilization",
       "value": "30%"
+    },
+    {
+      "device": "GPU",
+      "stat": "Utilization",
+      "value": "30%"
     }
   ]
 }

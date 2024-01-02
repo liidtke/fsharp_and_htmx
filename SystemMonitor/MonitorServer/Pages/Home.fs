@@ -9,10 +9,16 @@ open Falco.Markup.Attr
 open Models
 open Pages.Components
 
-let cardItem (item: DeviceStatModel) =
-    //Elem.article [] [ txt $"{item.device}: {item.value}" ]
-    card item.device item.value
-
+let card (item:DeviceStatModel) =
+    Elem.div
+        [ cl "card"; style "" ]
+        [ Elem.div
+              [ cl "content u-text-center pt-3" ]
+              [ Elem.p [ cl "title mt-0 mb-0" ] [ txt $"{item.device} - {item.stat}" ]
+                Elem.p [ cl "" ] [ txt item.value ] ]
+           
+          Elem.div [cl "card-flag"] []
+              ]
 
 let monitor (item: SystemUpdateModel) =
     Elem.div
@@ -26,7 +32,7 @@ let monitor (item: SystemUpdateModel) =
          @ if item.deviceStats.Length = 0 then
                [ Elem.p [] [ txt "Nada para exibir" ] ]
            else
-               [ Elem.div [ cl "grid" ] (List.map cardItem item.deviceStats) ])
+               [ Elem.div [ cl "monitor-grid" ] (List.map card item.deviceStats) ])
 
 let loadMonitor output =
     match output with

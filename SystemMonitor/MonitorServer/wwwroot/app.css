@@ -40,15 +40,16 @@ h1.header {
 
 }
 
-.mb-0{
+.mb-0 {
     margin-bottom: 0 !important;
 }
-.mt-0{
+
+.mt-0 {
     margin-top: 0 !important;
 }
 
-.card { 
-    box-shadow: 1px 2px 8px rgba(0,0,0,.16);
+.card {
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, .16);
     box-sizing: border-box;
     color: rgb(65, 84, 98);
     color-scheme: light;
@@ -59,8 +60,35 @@ h1.header {
     overflow-wrap: break-word;
     tab-size: 4;
     text-rendering: optimizelegibility;
-    padding: 12px;
-    width:12rem;
+    max-width: 12rem;
+    width:100%;
     border-radius: 0.25rem;
     margin-top: 8px;
+    margin-right: 8px;
+    padding: 0;
+    display: flex;
+}
+
+.card .content {
+    padding: 12px;
+    flex: 1;
+}
+
+.card-flag {
+    width: 4px;
+    border-radius: 0px 4px 4px 0;
+    background-color: rgb(0, 156, 204);
+    height: 100%;
+}
+
+.monitor-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+
+}
+
+@media only screen and (max-width: 600px) {
+   
 }
