@@ -81,6 +81,22 @@ h1.header {
     height: 100%;
 }
 
+.card-flag.cpu {
+    background-color: rgb(220,20,60);
+} 
+
+.card-flag.gpu {
+    background-color: rgb(255,69,0)
+}
+
+.subtitle{
+    font-size: 14px;
+}
+
+.title {
+    font-weight: 600;
+}
+
 .monitor-grid {
   display: flex;
   flex-direction: row;
@@ -91,4 +107,9 @@ h1.header {
 
 @media only screen and (max-width: 600px) {
    
+}
+
+.monitor-footer{
+    font-size: 12px;
+    margin-top: 4rem;
 }

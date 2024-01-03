@@ -9,18 +9,26 @@ open Falco.Markup.Attr
 open Models
 open Pages.Components
 
-let card (item:DeviceStatModel) =
+let card (item: DeviceStatModel) =
     Elem.div
         [ cl "card"; style "" ]
         [ Elem.div
               [ cl "content u-text-center pt-3" ]
-              [ Elem.p [ cl "title mt-0 mb-0" ] [ txt $"{item.device} - {item.stat}" ]
+              [ Elem.p [ cl "title mt-0 mb-0" ] [ txt $"{item.device}" ]
+                Elem.span [ cl "subtitle" ] [ txt item.stat ]
                 Elem.p [ cl "" ] [ txt item.value ] ]
-           
-          Elem.div [cl "card-flag"] []
-              ]
+
+          Elem.div [ cl $"card-flag {item.device.ToLower()}" ] [] ]
 
 let monitor (item: SystemUpdateModel) =
+    let content =
+        [ Elem.h1 [] [ txt "Monitor" ] ]
+        @ if item.deviceStats.Length = 0 then
+              [ Elem.p [] [ txt "No updates yet" ] ]
+          else
+              [ Elem.div [ cl "monitor-grid" ] (List.map card item.deviceStats) ]
+        @ [Elem.div [cl "monitor-footer"] [txt $"Last Update: {item.date}"]]
+
     Elem.div
         [ Attr.id "monitor"
           hxGet "/monitor"
@@ -28,11 +36,7 @@ let monitor (item: SystemUpdateModel) =
           //hxSwap "outerHTML"
           //hxTarget "monitor"
           ]
-        ([ Elem.h1 [] [ txt "Monitor" ] ]
-         @ if item.deviceStats.Length = 0 then
-               [ Elem.p [] [ txt "Nada para exibir" ] ]
-           else
-               [ Elem.div [ cl "monitor-grid" ] (List.map card item.deviceStats) ])
+        content
 
 let loadMonitor output =
     match output with
