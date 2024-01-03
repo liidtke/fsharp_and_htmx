@@ -32,9 +32,9 @@ let monitor (item: SystemUpdateModel) =
     Elem.div
         [ Attr.id "monitor"
           hxGet "/monitor"
-          //hxTrigger "every 2s"
-          //hxSwap "outerHTML"
-          //hxTarget "monitor"
+          hxTrigger "every 2s"
+          hxSwap "innerHTML"
+          hxTarget "#monitor"
           ]
         content
 
