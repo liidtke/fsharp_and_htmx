@@ -5,50 +5,61 @@ open Domain
 
 
 type Arguments =
-    | Host of host:string
-    | ApiKey of apikey:string
-    | Interval of number:int
-    | Client of client:string
+    | Host of host: string
+    | Key of key: string
+    | Interval of number: int
+    | Client of client: string
 
     interface IArgParserTemplate with
         member s.Usage =
             match s with
             | Host s -> "host to connect"
-            | ApiKey s -> "api key to auth"
+            | Key s -> "api key to auth"
             | Interval s -> "interval in ms to update server"
             | Client s -> "client id to connect"
 
-let parse (parser: ArgumentParser<Arguments>) (args: string array) =
-    let result = parser.Parse [| "--host"; "http://localhost:5262"; "--apikey"; "123"; "--interval"; "3200"; "--client"; "" |]
 
-    printfn "Interval: %i" (result.GetResult Interval)
+let getArg (args: string array) (name: string) (defaultValue: string) =
+    let index = args |> Seq.tryFindIndex (fun i -> i = name)
+
+    match index with
+    | None -> defaultValue
+    | Some i ->
+        let value = args.[i + 1]
+        value
+
+
+let parse (args: string array) =
+    // printfn "Interval: %i" (result.GetResult Interval)
     let env =
-        { host = result.GetResult Host
-          apiKey = result.GetResult ApiKey
-          interval = result.GetResult Interval
-          clientId = Guid.Empty 
-           }
+        { host = getArg args "--host" "http://localhost:5262"
+          apiKey = getArg args "--key" "123"
+          interval = getArg args "--interval" "3200" |> int
+          clientId = Guid.Empty }
 
+    printfn "%s" env.apiKey
     //if env.host = String.Empty || env.apiKey = String.Empty then
-        //invalidate "host and apikey are required"
+    //invalidate "host and apikey are required"
     //else
     succeed env
 
 
 [<EntryPoint>]
 let main args =
-    let parser = ArgumentParser.Create<Arguments>(programName = "MonitorServer.Client")
 
-    if Seq.contains "-hp" args then
+    if Seq.contains "--h" args then
+        let parser =
+            ArgumentParser.Create<Arguments>(programName = "MonitorServerClient.exe")
+
         let usage = parser.PrintUsage()
         printfn "%s" usage
         0
-    else    
-        printfn "Arguments passed to function : %A" args
-        let output = parse parser args
+    else
+        // printfn "Arguments passed to function : %A" args
+        let output = parse args
 
         match output with
-            | Success env -> Monitor.handle env |> Async.RunSynchronously 
-            | Failure f -> printfn "%s" f.ErrorMessage
+        | Success env -> Monitor.handle env |> Async.RunSynchronously
+        | Failure f -> printfn "%s" f.ErrorMessage
         // Return 0. This indicates success.
         0

@@ -11,7 +11,7 @@ let mount (env: Env) (loaders: StatLoader list) =
       clientId = env.clientId }
 
 let private run env t =
-    printfn "run"
+    printfn "running client"
     let timer = new PeriodicTimer(TimeSpan.FromMilliseconds(env.interval))
 
     let rec work t =
@@ -21,7 +21,7 @@ let private run env t =
             let! response = mount env <| Loader.loaders () |> FlurlBuilder.post env "/api/status"
 
             match response with
-            | Success systemUpdateModel -> printfn "send ok"
+            | Success systemUpdateModel -> ()  
             | Failure errorResult -> printfn "%s" errorResult.ErrorMessage
 
             if not t.IsCancellationRequested then
