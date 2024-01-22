@@ -16,8 +16,7 @@ let run name =
     use proc = Process.Start(start)
 
     async {
-        let! msg = proc.StandardOutput.ReadToEndAsync() |> Async.AwaitTask
-        return msg
+        return! proc.StandardOutput.ReadToEndAsync() |> Async.AwaitTask
     }
 
 let parseRawCPU raw = raw
