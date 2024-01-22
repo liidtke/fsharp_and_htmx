@@ -19,7 +19,7 @@ type Arguments =
             | Client s -> "client id to connect"
 
 let parse (parser: ArgumentParser<Arguments>) (args: string array) =
-    let result = parser.Parse [| "--host"; "http://localhost:5262"; "--apikey"; "123"; "--interval"; "2400"; "--client"; "" |]
+    let result = parser.Parse [| "--host"; "http://localhost:5262"; "--apikey"; "123"; "--interval"; "3200"; "--client"; "" |]
 
     printfn "Interval: %i" (result.GetResult Interval)
     let env =

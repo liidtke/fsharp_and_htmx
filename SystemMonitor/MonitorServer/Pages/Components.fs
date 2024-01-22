@@ -31,7 +31,7 @@ let page title ct =
     let body = [ main ]
 
     Elem.html
-        [create "data-theme" <| "light"]
+        [create "data-theme" <| "dark"]
         [ Elem.head
               []
               [ Elem.meta

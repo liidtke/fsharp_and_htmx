@@ -61,7 +61,7 @@ h1.header {
     tab-size: 4;
     text-rendering: optimizelegibility;
     max-width: 12rem;
-    width:100%;
+    width: 100%;
     border-radius: 0.25rem;
     margin-top: 8px;
     margin-right: 8px;
@@ -82,14 +82,14 @@ h1.header {
 }
 
 .card-flag.cpu {
-    background-color: rgb(220,20,60);
-} 
-
-.card-flag.gpu {
-    background-color: rgb(255,69,0)
+    background-color: rgb(220, 20, 60);
 }
 
-.subtitle{
+.card-flag.gpu {
+    background-color: rgb(255, 69, 0)
+}
+
+.subtitle {
     font-size: 14px;
 }
 
@@ -98,18 +98,75 @@ h1.header {
 }
 
 .monitor-grid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
 
 }
 
 @media only screen and (max-width: 600px) {
-   
+
 }
 
-.monitor-footer{
+.monitor-footer {
     font-size: 12px;
     margin-top: 4rem;
+}
+
+.monitor-line {
+    height: 3px;
+    position: relative;
+    overflow: hidden;
+    background-color: #ddd;
+    margin: 5px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.monitor-line:before {
+    content: "";
+    position: absolute;
+    right: -100%;
+    height: 3px;
+    width: 100%;
+    background-color: coral;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.monitor-line.c1:before {
+    right: 90% !important;
+}
+
+.monitor-line.c2:before {
+    right: 80% !important;
+}
+
+
+.monitor-line.c3:before {
+    right: 70% !important;
+}
+
+.monitor-line.c4:before {
+    right: 60% !important;
+}
+
+.monitor-line.c5:before {
+    right: 50% !important;
+}
+
+.monitor-line.c6:before {
+    right: 40% !important;
+}
+.monitor-line.c7:before {
+    right: 30% !important;
+}
+.monitor-line.c8:before {
+    right: 20% !important;
+}
+
+.monitor-line.c9:before {
+    right: 10% !important;
 }

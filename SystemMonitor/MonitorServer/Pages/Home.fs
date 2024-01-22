@@ -9,6 +9,10 @@ open Falco.Markup.Attr
 open Models
 open Pages.Components
 
+let monitorClass (value:string) =
+    let first = Seq.toList value |> Seq.head
+    $"c{first}" 
+
 let card (item: DeviceStatModel) =
     Elem.div
         [ cl "card"; style "" ]
@@ -16,7 +20,10 @@ let card (item: DeviceStatModel) =
               [ cl "content u-text-center pt-3" ]
               [ Elem.p [ cl "title mt-0 mb-0" ] [ txt $"{item.device}" ]
                 Elem.span [ cl "subtitle" ] [ txt item.stat ]
-                Elem.p [ cl "" ] [ txt item.value ] ]
+                Elem.p [ cl "" ] [ txt item.value ]
+                Elem.div [cl $"monitor-line {monitorClass item.value}"] [
+                    ]
+                 ]
 
           Elem.div [ cl $"card-flag {item.device.ToLower()}" ] [] ]
 
@@ -32,7 +39,7 @@ let monitor (item: SystemUpdateModel) =
     Elem.div
         [ Attr.id "monitor"
           hxGet "/monitor"
-          hxTrigger "every 2s"
+          hxTrigger "every 3s"
           hxSwap "innerHTML"
           hxTarget "#monitor"
           ]
@@ -52,6 +59,6 @@ let monitorPage: HttpHandler =
 let homePage () =
     page "Home" [ Elem.h1 [] [ txt "Home" ] ]
 
-let homeEndpoint = get "/" (Response.ofHtml <| homePage ())
+let homeEndpoint = get "/" monitorPage
 let monitorEndpoint = get "/monitor" monitorPage
 let endpoints = [ homeEndpoint; monitorEndpoint ]

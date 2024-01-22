@@ -29,17 +29,17 @@ Content-Length: 76
   "deviceStats": [
     {
       "device": "CPU",
-      "stat": "Utilization",
+      "stat": "Usage",
       "value": "60%"
     },
     {
       "device": "Memory",
-      "stat": "Utilization",
+      "stat": "Usage",
       "value": "30%"
     },
     {
       "device": "GPU",
-      "stat": "Utilization",
+      "stat": "Usage",
       "value": "30%"
     }
   ]

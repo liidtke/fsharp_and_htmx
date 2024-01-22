@@ -5,12 +5,10 @@ open System
 open System.Threading
 open Hardware.Info
 
-let mount (env:Env) (loaders:StatLoader list) =
-    {
-     deviceStats = loaders |> List.map (fun i -> i())
-     date = DateTime.UtcNow
-     clientId =  env.clientId
-    }
+let mount (env: Env) (loaders: StatLoader list) =
+    { deviceStats = loaders |> List.map (fun i -> i ())
+      date = DateTime.UtcNow
+      clientId = env.clientId }
 
 let private run env t =
     printfn "run"
@@ -20,14 +18,16 @@ let private run env t =
         task {
             let! tick = timer.WaitForNextTickAsync(t)
 
-            let! response = mount env Loader.loaders |> FlurlBuilder.post env "/api/status"
+            let! response = mount env <| Loader.loaders () |> FlurlBuilder.post env "/api/status"
+
             match response with
             | Success systemUpdateModel -> printfn "send ok"
             | Failure errorResult -> printfn "%s" errorResult.ErrorMessage
-            
+
             if not t.IsCancellationRequested then
                 return! work t
         }
+
     work t
 
 let handle env =

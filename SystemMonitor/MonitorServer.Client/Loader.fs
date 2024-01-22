@@ -49,10 +49,12 @@ module Raw =
 
     let parseRawCPUUtilization (raw: string) =
         let values = raw.Split(" ", StringSplitOptions.RemoveEmptyEntries) |> Seq.toList
-        let index = values |> Seq.findIndex(fun i -> i = "all")
+        let index = values |> Seq.findIndex (fun i -> i = "all")
         printf "index:%i"
         values.[index + 1].Replace(",", ".")
-        
+
+    let getMemoryUtilization () =
+        run "free | grep Mem | awk '{print $3/$2 * 100.0}'" |> Async.RunSynchronously
 
 open Raw
 
@@ -63,24 +65,28 @@ let cpuTemp value : StatLoader =
           stat = "Temperature"
           value = value }
 
-let cpuUsage: StatLoader =
+let cpuUsage value : StatLoader =
     fun () ->
         { device = "CPU"
           name = "Generic CPU"
-          stat = "Utilization"
-          value = "1" }
+          stat = "Usage"
+          value = value }
 
-let memoryUsage: StatLoader =
+let memoryUsage value : StatLoader =
     fun () ->
         { device = "Memory"
           name = "RAM"
-          stat = "Utilization"
-          value = "30" }
+          stat = "Usage"
+          value = value }
 
-let loaders: StatLoader list =
+let loaders () : StatLoader list =
     let rawSensors = getRawSensors ()
     let cpuValue = rawSensors |> parseRawCPUTemp
-    let cpuUtilization = rawCpuStat () |> parseRawCPUUtilization
-    printfn "%s" cpuValue
-    printfn "%s" cpuUtilization
-    [ cpuTemp cpuValue; memoryUsage ]
+    // let cpuUtilization = rawCpuStat () |> parseRawCPUUtilization
+    
+    // printfn "%s" cpuValue
+    // printfn "%s" cpuUtilization
+
+    [ cpuTemp cpuValue
+      // cpuUsage cpuUtilization
+      memoryUsage <| getMemoryUtilization () ]

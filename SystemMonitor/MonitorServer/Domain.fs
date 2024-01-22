@@ -10,7 +10,7 @@ type Device =
     | Disk
 
 type Stat =
-    | Utilization
+    | Usage
     | Temperature
     | Available
 

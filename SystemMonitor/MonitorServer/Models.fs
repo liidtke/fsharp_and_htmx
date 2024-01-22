@@ -24,14 +24,14 @@ module Device =
 module Stat =
     let convert (s: Stat) =
         match s with
-        | Utilization -> "Utilization"
+        | Usage -> "Usage"
         | Temperature -> "Temperature"
         | Available -> "Available"
         | _ -> failwith "todo"
 
     let parse (str: string) =
         match str with
-        | "Utilization" -> Utilization
+        | "Usage" -> Usage
         | "Temperature" -> Temperature
         | "Available" -> Available
         | _ -> failwith "todo"
